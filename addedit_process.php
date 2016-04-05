@@ -86,6 +86,12 @@ if ($thisID == "" ) {
         $access_info_note      = mysql_real_escape_string(stripslashes($_REQUEST["access_info_note"]));
         $breach_cure_period    = mysql_real_escape_string(stripslashes($_REQUEST["breach_cure_period"]));
         $term_note             = mysql_real_escape_string(stripslashes($_REQUEST["term_note"]));
+	$publisher             = mysql_real_escape_string(stripslashes($_REQUEST["publisher"]));
+	$alumni_users          = mysql_real_escape_string(stripslashes($_REQUEST["alumni_users"]));
+	$link_radio            = mysql_real_escape_string(stripslashes($_REQUEST["link_radio"]));
+	$link                  = mysql_real_escape_string(stripslashes($_REQUEST["link"]));
+	$cancel                = mysql_real_escape_string(stripslashes($_REQUEST["cancel"]));
+	$cancel_days           = mysql_real_escape_string(stripslashes($_REQUEST["cancel_days"]));
         
 // Setting variables based on the checkbox status after the submission
 
@@ -115,6 +121,20 @@ if (isset($_POST['submit'])) {
 		}
 	}
 
+
+// ALUMNI USERS
+	if(isset($_POST['alumni_users'])) {
+		if ($_POST['alumni_users'] == 'Yes') {
+			$alumni_users = 'Yes';
+		}
+		else if ($_POST['alumni_users'] == 'No') {
+			$alumni_users = 'No';
+		}
+		else if ($_POST['alumni_users'] == 'Silent') {
+			$alumni_users = 'Silent';
+		}
+	}	
+	
 // ILL
 
 	if(isset($_POST['ill_Print_fax'])) {
@@ -163,6 +183,9 @@ if (isset($_POST['submit'])) {
 		}
 		else if ($_POST['e_reserve'] == 'No') {
 			$e_reserve = 'No';
+		}
+		else if ($_POST['e_reserve'] == 'Silent') {
+			$e_reserve = 'Silent';
 		}
 	}
 
@@ -270,7 +293,18 @@ if (isset($_POST['submit'])) {
 			$print_radio = 'Silent';
 		}
 	}
-
+	
+	if(isset($_POST['link_radio'])) {
+		if ($_POST['link_radio'] == 'Permitted') {
+			$link_radio = 'Permitted';
+		}
+		else if ($_POST['link_radio'] == 'Prohibited') {
+			$link_radio = 'Prohibited';
+		}
+		else if ($_POST['link_radio'] == 'Silent') {
+			$link_radio = 'Silent';
+		}
+	}
 // Trimming blank spaces around the textbox content
         $e_product           = trim($e_product);
         $licensor            = trim($licensor);
@@ -288,6 +322,10 @@ if (isset($_POST['submit'])) {
         $access_info_note    = trim($access_info_note);
         $breach_cure_period  = trim($breach_cure_period);
         $term_note           = trim($term_note);
+	$publisher           = trim($publisher);
+	$link                = trim($link);
+	$cancel_days         = trim($cancel_days);
+	$cancel              = trim($cancel);
 }
 
 if ($action == "edit") {
@@ -333,6 +371,12 @@ $query = "UPDATE license SET" .
         " breach_cure_period = \"" . $breach_cure_period . "\"," .
         " term_note = \"" . $term_note . "\"," .
         " remote = \"" . $remote . "\"," .
+	" publisher = \"" . $publisher . "\"," .
+	" alumni_users = \"" . $alumni_users . "\"," .
+	" link_radio = \"" . $link_radio . "\"," .
+	" link = \"" . $link . "\"," .
+	" cancel = \"" . $cancel . "\"," .
+	" cancel_days = \"" . $cancel_days . "\"," .
         " share_radio = \"" . $share_radio . "\"," .
         " share = \"" . $share . "\"" .
         " WHERE id = " . $thisID;
@@ -340,7 +384,7 @@ $query = "UPDATE license SET" .
 }
 
 if ($action == "add") {
-$query = "INSERT into license (e_product, licensor, license_date, license_term, concurrent_users, walkin_users, walkin_users_note, managing_library, pubnotes, staffnotes, archiving_note, arch_note_online, arch_note_media, arch_note_other, authusers, concurrent, coursepack_note, cp_note_silent, coursepack_print, coursepack_electronic, cp_note_delete, cp_note_permission, distance, download_radio, download, e_reserve, ill_ariel, ill_email, ill_mailfax, ill_npo, ill_note, perpetual, perpetual_note, p_reserve, print_radio, print, access_info_note, breach_cure_period, term_note, remote, share_radio, share) VALUES (\"" .
+$query = "INSERT into license (e_product, licensor, license_date, license_term, concurrent_users, walkin_users, walkin_users_note, managing_library, pubnotes, staffnotes, archiving_note, arch_note_online, arch_note_media, arch_note_other, authusers, concurrent, coursepack_note, cp_note_silent, coursepack_print, coursepack_electronic, cp_note_delete, cp_note_permission, distance, download_radio, download, e_reserve, ill_ariel, ill_email, ill_mailfax, ill_npo, ill_note, perpetual, perpetual_note, p_reserve, print_radio, print, access_info_note, breach_cure_period, term_note, remote, publisher, alumni_users, link_radio, link, cancel, cancel_days, share_radio, share) VALUES (\"" .
 $e_product . "\",\"" .
 $licensor . "\",\"" .
 entomysql($license_date) . "\",\"" .
@@ -381,8 +425,15 @@ $access_info_note . "\",\"" .
 $breach_cure_period . "\",\"" .
 $term_note . "\",\"" .
 $remote . "\",\"" .
+$publisher . "\",\"" .
+$alumni_users . "\",\"" .
+$link_radio . "\",\"" .
+$link . "\",\"" .
+$cancel . "\",\"" .
+$cancel_days . "\",\"" .
 $share_radio . "\",\"" .
-$share . "\")";
+$share . "\")" ;
+
 }
 
 //echo $query;
