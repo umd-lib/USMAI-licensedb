@@ -94,6 +94,12 @@ if ($action == "edit") {
 	$access_info_note      = $row["access_info_note"];
 	$breach_cure_period    = $row["breach_cure_period"];
 	$term_note             = $row["term_note"];
+	$publisher			   = $row["publisher"];
+	$alumni_users		   = $row["alumni_users"];
+	$link_radio            = $row["link_radio"];
+	$link                  = $row["link"];
+	$cancel                = $row["cancel"];
+	$cancel_days           = $row["cancel_days"];
 	$links = "<p>Public view of this license: <a href=\"license.php?id=" . $thisID . "\">http://" .$_SERVER["SERVER_NAME"] . str_replace("addedit.php","",$_SERVER["PHP_SELF"]) . "license.php?id=" . $thisID;
         #$links = "<p>Public view of this license: <a href=\"license.php?id=" . $thisID . "\">http://" .$_SERVER["SERVER_NAME"] . str_replace("addedit.php","",$_SERVER["PHP_SELF"]) . "license.php?id=" . $thisID . "</a></p><p>Staff view of this license: <a href=\"license.php?id=" . $thisID . "&view=S\">http://" .$_SERVER["SERVER_NAME"] . str_replace("addedit.php","",$_SERVER["PHP_SELF"]) . "license.php?id=" . $thisID . "&view=S</a></p>";
         echo "<h2>Editing license " . $thisID . ": " . $e_product . ".</h2>";
@@ -141,6 +147,12 @@ if ($action == "edit") {
         $share                 = "";
 	$access_info_note      = "";
 	$breach_cure_period    = "";
+	$publisher			   = "";
+	$alumni_users		   = "";
+	$link_radio            = "";
+	$link                  = "";
+	$cancel                = "";
+	$cancel_days           = "";
 	$term_note             = "";
         $links                 = "";
         echo "<h2>Adding New License.</h2>";
@@ -183,6 +195,7 @@ if ($scan_url == "") {
 <p align="center"><strong>Fields for Public Display</strong></p>
 <fieldset><legend>License Name</legend><textarea cols="50" rows="1" name="e_product"><?php echo $e_product; ?></textarea></fieldset>
 <fieldset><legend>Vendor/Agent</legend><textarea cols="50" rows="1" name="licensor"><?php echo $licensor; ?></textarea></fieldset>
+<fieldset><legend>Publisher</legend><textarea cols="50" rows="1" name="publisher"><?php echo $publisher; ?></textarea></fieldset>
 <fieldset><legend>Date of license (in MM/DD/YYYY format)</legend><textarea cols="50" rows="1" name="license_date"><?php echo $license_date; ?></textarea></fieldset>
 <fieldset><legend>Subscription/Renewal term</legend><textarea cols="50" rows="1" name="license_term"><?php echo $license_term; ?></textarea></fieldset>
 <br />
@@ -213,8 +226,17 @@ onClick="document.getElementById('walkin_users_yes').checked  = (this.checked)?1
 <Input type = 'Radio' name='walkin_users' id='walkin_users_no'  value = 'No'  onclick="document.getElementById('walkin_users_note').disabled=true"
 <?php if($walkin_users == "No") {echo" CHECKED";}?>>No<br />
 <br />
+<br />
 <fieldset><legend>Limitations on walk-in locations (e.g. single-site)</legend><textarea cols="50" rows="3" name="walkin_users_note" id="walkin_users_note">
 <?php echo $walkin_users_note; ?></textarea></fieldset>
+<br />
+<legend>Alumni Users:</legend><br>
+<Input type = 'Radio' name='alumni_users' id='alumni_users_yes' value = 'Yes'
+<?php if($alumni_users == "Yes"){echo" CHECKED";}?>>Yes<br />
+<Input type = 'Radio' name='alumni_users' id='alumni_users_no'  value = 'No'
+<?php if($alumni_users == "No") {echo" CHECKED";}?>>No<br />
+<Input type = 'Radio' name='alumni_users' id='alumni_users_silent' value = 'Silent'
+<?php if($alumni_users == "Silent") {echo" CHECKED";}?>>Silent<br />
 <br />
 <legend>Remote Access:</legend><br>
 <Input type = 'Radio' name ='remote' id='remote_access_yes' value= 'Yes' 
@@ -234,7 +256,7 @@ onClick="document.getElementById('walkin_users_yes').checked  = (this.checked)?1
 <Input type = 'Checkbox' Name ='ill_Email'          id="ill_Email"          onclick="document.getElementById('ill_none').checked = false" 
 <?php if($ill_email   == "Yes"){echo" CHECKED";}?>>Email/Electronic<br />
 <Input type = 'Checkbox' Name ='ill_Ariel_Odyssey'  id="ill_Ariel_Odyssey"  onclick="document.getElementById('ill_none').checked = false" 
-<?php if($ill_ariel   == "Yes"){echo" CHECKED";}?>>Ariel/Odyssey<br />
+<?php if($ill_ariel   == "Yes"){echo" CHECKED";}?>>Secure Transmission<br />
 <Input type = 'Checkbox' Name ='ill_NPO'            id="ill_NPO"            onclick="document.getElementById('ill_none').checked = false" 
 <?php if($ill_npo     == "Yes"){echo" CHECKED";}?>>Can only lend to non-profits<br />
 
@@ -282,8 +304,10 @@ document.getElementById('ill_NPO').checked            = false}"
 <p align="center"><strong>E-reserves</strong></p>
 <Input type = 'Radio' Name ='e_reserve' id='e_reserve_yes' value= 'Yes' 
 <?php if($e_reserve == "Yes"){echo" CHECKED";}?>>Yes, delete upon cessation of use<br />
-<Input type = 'Radio' Name ='e_reserve' id='e_reserve_no'  value= 'No' 
+<Input type = 'Radio' Name ='e_reserve' id='e_reserve_no' value= 'No' 
 <?php if($e_reserve == "No") {echo" CHECKED";}?>>No<br />
+<Input type = 'Radio' Name ='e_reserve' id='e_reserve_silent' value= 'Silent' 
+<?php if($e_reserve == "Silent") {echo" CHECKED";}?>>Silent<br />
 <br />
 
 <!-- Course Pack -->
@@ -372,7 +396,23 @@ document.getElementById('arch_note_other').disabled = (this.checked)?1:0"
 </fieldset><br />
 
 <fieldset><legend>Other Access Information</legend><textarea cols="50" rows="3" name="access_info_note"><?php echo $access_info_note; ?></textarea></fieldset>
-<fieldset><legend>Breach Instructions</legend><textarea cols="50" rows="3" name="breach_cure_period"><?php echo $breach_cure_period; ?></textarea></fieldset>
+<fieldset><legend>Breach Instructions</legend><textarea cols="50" rows="3" name="breach_cure_period"><?php echo $breach_cure_period; ?></textarea></fieldset><br />
+
+<fieldset><legend>Link</legend>
+<Input type = 'Radio' Name ='link_radio' id='link_permitted' value='Permitted'
+<?php if($link_radio == "Permitted"){echo" CHECKED";}?>>Permitted
+<Input type = 'Radio' Name ='link_radio' id='link_prohibited' value='Prohibited'
+<?php if($link_radio == "Prohibited") {echo" CHECKED";}?>>Prohibited
+<Input type = 'Radio' Name ='link_radio' id='link_silent' value='Silent'
+<?php if($link_radio == "Silent") {echo" CHECKED";}?>>Silent
+<textarea cols="50" rows="3" name="link"><?php echo $link; ?></textarea>
+</fieldset><br />
+
+<fieldset><legend>Cancellation</legend><label for="cancel_days">Number of Days</label><br />
+<Input type = 'Number' Name ='cancel_days' id='cancel_days' value='<?php echo $cancel_days; ?>'></Input><br />
+<label for="cancel">Cancellation Note</label><br />
+<textarea cols="50" rows="3" name="cancel"><?php echo $cancel; ?></textarea></fieldset><br />
+
 <fieldset><legend>General Notes/Comments</legend><textarea cols="50" rows="3" name="term_note"><?php echo $term_note; ?></textarea></fieldset>
 <br />
 
