@@ -83,6 +83,12 @@ $term_note             = $row["term_note"];
 $library_code          = $row["library_code"];
 $library_name          = $row["library_name"];
 $library_email         = $row["email"];
+$publisher			   = $row["publisher"];
+$alumni_users		   = $row["alumni_users"];
+$link_radio            = $row["link_radio"];
+$link                  = $row["link"];
+$cancel                = $row["cancel"];
+$cancel_days           = $row["cancel_days"];
 }
 mysql_free_result($result);
 
@@ -92,6 +98,7 @@ echo "<tr bgcolor=\"#FFCC33\"><td style=\"padding: 10px 10px 10px 6px; border-bo
 
 
 echo "<tr class=\"Block\"><td style=\"border-bottom: 1px solid #444444\"><FONT size=2>Terms and conditions apply to <strong>" . $library_name . "</strong></td></tr>\n";
+echo "<tr class=\"Block\"><td style=\"border-bottom: 1px solid #444444\"><FONT size=2>Publisher: <strong>" . $publisher . "</strong></td></tr>\n";
 echo "<tr class=\"Block\"><td style=\"border-bottom: 1px solid #444444\"><FONT size=2>Vendor: <strong>" . $licensor . "</strong></td></tr>\n";
 
 
@@ -115,6 +122,10 @@ echo "<tr><td class=\"Block\" style=\"padding-left: 4px;\"><b>Walk-in library us
 
 if ($walkin_users_note != "") {
 echo "<tr><td class=\"Block\" style=\"padding-left: 4px;\"><b>Limitations on walk-in locations: </b>" . $walkin_users_note . "</td></tr>\n";
+}
+
+if ($alumni_users != "") {
+echo "<tr><td class=\"Block\" style=\"padding-left: 4px;\"><b>Alumni users permitted? </b>" . $alumni_users . "</td></tr>\n";
 }
 
 if ($remote != "") {
@@ -145,7 +156,12 @@ if ($share_radio != "" || $share != "") {
    }
 echo "<tr><td class=\"Block\" style=\"padding-left: 4px;\"><b>Sharing: </b>" . $share_radio . $share . "</td></tr>\n";
 }
-
+if ($link_radio != "" || $link != "") {
+	if ($link != "") {
+		$link = '. Note: ' . $link;
+	}
+echo "<tr><td class=\"Block\" style=\"padding-left: 4px;\"><b>Linking: </b>" . $link_radio . $link . "</td></tr>\n";
+}
 if ($access_info_note != "") {
 echo "<tr><td class=\"Block\" style=\"padding-left: 4px;\"><b>Other Access Restrictions: </b>" . $access_info_note . "</td></tr>\n";
 }
@@ -161,7 +177,7 @@ if ($ill_email   == "Yes") {
 $ill_summary = $ill_summary . 'Electronic. ';
 }
 if ($ill_ariel   == "Yes") {
-$ill_summary = $ill_summary . 'Ariel/Odyssey. ';
+$ill_summary = $ill_summary . 'Secure Transmission. ';
 }
 if ($ill_note    == "Silent, US copyright law (fair use) prevails") {
 $ill_summary = $ill_summary . 'Silent, US copyright law (fair use) prevails. ';
@@ -187,6 +203,9 @@ echo "<tr><td class=\"Block\" style=\"padding-left: 4px;\"><b>E-reserves: </b> P
 }
 if ($e_reserve == "No") {
 echo "<tr><td class=\"Block\" style=\"padding-left: 4px;\"><b>E-reserves: </b> Prohibitted</td></tr>\n";
+}
+if ($e_reserve == "Silent") {
+echo "<tr><td class=\"Block\" style=\"padding-left: 4px;\"><b>E-reserves: </b> Silent</td></tr>\n";
 }
 if ($p_reserve != "") {
 echo "<tr><td class=\"Block\" style=\"padding-left: 4px;\"><b>Print reserves: </b>" . $p_reserve . "</td></tr>\n";
@@ -238,6 +257,12 @@ echo "<tr><td></td></tr>\n<tr><td></td></tr>\n";
 echo "<tr><td class=\"CitationTextRed\">Other information</td></tr><tr><td class=\"Block\" style=\"padding-left: 14px;\">\n";
 if ($breach_cure_period != "") {
 echo "<tr><td class=\"Block\" style=\"padding-left: 4px;\"><b>Breach instructions: </b>" . $breach_cure_period . "</td></tr>\n";
+}
+if ($cancel_days != "") {
+echo "<tr><td class=\"Block\" style=\"padding-left: 4px;\"><b>Cancellation Days: </b>" . $cancel_days . "</td></tr>\n";
+}
+if ($cancel != "") {
+echo "<tr><td class=\"Block\" style=\"padding-left: 4px;\"><b>Cancellation Note: </b>" . $cancel . "</td></tr>\n";
 }
 if ($term_note != "") {
 echo "<tr><td class=\"Block\" style=\"padding-left: 4px;\"><b>General Note: </b>" . $term_note . "</td></tr>\n";
